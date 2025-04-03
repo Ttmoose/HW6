@@ -63,30 +63,31 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-public static int lastBoulder(int[] boulders) {
-    // Create a PriorityQueue with a custom Comparator to act as a max-heap
-    PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());  // Max-heap (reverse order)
+    public static int lastBoulder(int[] boulders) {
+        // Create a PriorityQueue with a custom Comparator to act as a max-heap
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());  // Max-heap (reverse order)
 
-    // Add all boulders to the priority queue
-    for (int boulder : boulders) {
-        pq.add(boulder);
-    }
-
-    // Simulate the game as long as there are two or more boulders
-    while (pq.size() > 1) {
-        // Take the two heaviest boulders
-        int x = pq.poll();  // Get the largest
-        int y = pq.poll();  // Get the second largest
-
-        // If they are not equal, the remaining boulder gets the new weight
-        if (x != y) {
-            pq.add(Math.abs(x - y));  // Add the result back into the queue
+        // Add all boulders to the priority queue
+        for (int boulder : boulders) {
+            pq.add(boulder);
         }
+
+        // Simulate the game as long as there are two or more boulders
+        while (pq.size() > 1) {
+            // Take the two heaviest boulders
+            int x = pq.poll();  // Get the largest
+            int y = pq.poll();  // Get the second largest
+
+            // If they are not equal, the remaining boulder gets the new weight
+            if (x != y) {
+                pq.add(Math.abs(x - y));  // Add the result back into the queue
+            }
+        }
+
+        // Return the remaining boulder, or 0 if the queue is empty
+        return pq.isEmpty() ? 0 : pq.peek();  // Peek to get the remaining boulder if any
     }
 
-    // Return the remaining boulder, or 0 if the queue is empty
-    return pq.isEmpty() ? 0 : pq.peek();  // Peek to get the remaining boulder if any
-}
 
     /**
      * Method showDuplicates
