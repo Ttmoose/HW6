@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   TUKER MOOSE - COMP 272/400C-002 - Spring 2025
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,9 +150,17 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
-
-        // YOUR CODE GOES HERE
-        return null;
+        // Create a new node for the element with its priority
+        Node newNode = new Node(e, priority, tree.size());
+        
+        // Add the new node at the end of the heap (as the rightmost leaf)
+        tree.add(newNode);
+        
+        // Pull the new node up to its correct position to maintain the heap property
+        pullUp(tree.size() - 1);
+        
+        // Return the node representing the added element
+        return newNode;
     }
 
 
@@ -167,8 +175,12 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        // Iterate through the tree and check if any node contains the element
+        for (Node node : tree) {
+            if (node.value.equals(e)) {
+                return true;
+            }
+        }
         return false;
     }
 

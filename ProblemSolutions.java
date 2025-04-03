@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   TUKER MOOSE - COMP 272/400C-002 - Spring 2025
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -63,14 +63,30 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-  public static int lastBoulder(int[] boulders) {
+public static int lastBoulder(int[] boulders) {
+    // Create a PriorityQueue with a custom Comparator to act as a max-heap
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());  // Max-heap (reverse order)
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+    // Add all boulders to the priority queue
+    for (int boulder : boulders) {
+        pq.add(boulder);
+    }
 
+    // Simulate the game as long as there are two or more boulders
+    while (pq.size() > 1) {
+        // Take the two heaviest boulders
+        int x = pq.poll();  // Get the largest
+        int y = pq.poll();  // Get the second largest
+
+        // If they are not equal, the remaining boulder gets the new weight
+        if (x != y) {
+            pq.add(Math.abs(x - y));  // Add the result back into the queue
+        }
+    }
+
+    // Return the remaining boulder, or 0 if the queue is empty
+    return pq.isEmpty() ? 0 : pq.peek();  // Peek to get the remaining boulder if any
+}
 
     /**
      * Method showDuplicates
@@ -90,12 +106,26 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
-
+        // Create a map to count occurrences of each string
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        for (String str : input) {
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+        
+        // Create a list to store duplicates
+        ArrayList<String> duplicates = new ArrayList<>();
+        
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > 1) {
+                duplicates.add(entry.getKey());
+            }
+        }
+        
+        // Sort the list in ascending order
+        Collections.sort(duplicates);
+        
+        return duplicates;
     }
 
 
@@ -130,10 +160,29 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        // Create a set to keep track of numbers we've seen
+        HashSet<Integer> seen = new HashSet<>();
+        
+        // Create a set to store pairs in sorted order
+        TreeSet<String> pairs = new TreeSet<>();
+        
+        // Loop through the array
+        for (int num : input) {
+            int complement = k - num;
+            
+            // Check if the complement exists in the set
+            if (seen.contains(complement)) {
+                // Add the pair to the set (ensure the pair is in sorted order)
+                int smaller = Math.min(num, complement);
+                int larger = Math.max(num, complement);
+                pairs.add("(" + smaller + ", " + larger + ")");
+            }
+            
+            // Add the current number to the seen set
+            seen.add(num);
+        }
+            
+        // Convert the TreeSet to an ArrayList and return
+        return new ArrayList<>(pairs);
     }
 }
